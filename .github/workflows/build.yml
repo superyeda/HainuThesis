@@ -1,0 +1,41 @@
+name: Build Thesis PDFs
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: texlive/texlive:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Master Thesis PDF
+        run: |
+          latexmk -xelatex -interaction=nonstopmode main.tex
+          cp main.pdf main-master.pdf
+
+      - name: Build Doctor Thesis PDF
+        run: |
+          latexmk -xelatex -interaction=nonstopmode -jobname=main-doctor \
+            -usepretex="\PassOptionsToClass{degree=doctor}{hainanuthesis}" main.tex
+
+      - name: Build Anonymous Review PDF
+        run: |
+          latexmk -xelatex -interaction=nonstopmode -jobname=main-anonymous \
+            -usepretex="\PassOptionsToClass{anonymous=true}{hainanuthesis}" main.tex
+
+      - name: Upload compiled PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: hainanuthesis-example-pdfs
+          path: |
+            main-master.pdf
+            main-doctor.pdf
+            main-anonymous.pdf

@@ -1,0 +1,17 @@
+% !TeX encoding = UTF-8
+
+\begin{cnabstract}
+随着数据要素流通与隐私保护法规的日益完善，联邦学习作为一种无需集中原始数据即可实现多方协同建模的分布式机器学习范式，已在智慧医疗、金融风控及自贸港跨境数据协作等场景中展现出重要价值。然而，实际部署环境普遍面临客户端数据非独立同分布（Non-IID）、通信带宽受限以及梯度泄露攻击等关键挑战，导致传统聚合算法收敛缓慢且隐私与效用难以兼顾。
+
+针对上述问题，本文围绕自适应聚合与差分隐私保护机制展开系统研究，主要工作与创新成果如下：（1）构建了基于历史梯度一致性度量的自适应加权聚合框架，有效缓解异构数据分布引发的客户端漂移现象；（2）提出了分阶段动态隐私预算分配策略，在满足 $(\varepsilon, \delta)$-差分隐私理论保障的前提下显著降低了噪声注入对模型精度的损害；（3）给出了非凸目标函数下的严格收敛上界证明，并在多个公开基准数据集上验证了所提方法的有效性与通信效率。
+
+实验结果表明，在高度异构的数据划分与同等隐私预算约束下，本文方法相较经典基准算法将测试准确率提升了 3.8\% 至 6.2\%，同时将达到目标精度所需的通信轮次减少了约 31\%，为面向多主体协作场景的可信联邦学习系统落地提供了理论支撑与工程参考。
+\end{cnabstract}
+
+\begin{enabstract}
+With the rapid advancement of data governance regulations and privacy protection requirements, federated learning has emerged as a promising distributed machine learning paradigm that enables collaborative model training without centralizing raw private data. Nevertheless, practical deployments frequently suffer from non-independent and identically distributed (Non-IID) client data, constrained communication bandwidth, and gradient inversion attacks, resulting in degraded convergence speed and unfavorable privacy-utility trade-offs.
+
+To address these challenges, this thesis investigates privacy-preserving adaptive aggregation and its theoretical convergence properties. First, an adaptive weighted aggregation mechanism driven by historical gradient consistency is formulated to mitigate client drift under severe statistical heterogeneity. Second, a stage-wise dynamic privacy budget allocation scheme is designed to preserve $(\varepsilon, \delta)$-differential privacy while minimizing accuracy degradation. Third, a tight non-convex convergence upper bound is established theoretically and validated empirically across representative benchmark datasets.
+
+Extensive experimental results demonstrate that the proposed approach improves test accuracy by 3.8\% to 6.2\% over standard baselines under identical privacy budgets while reducing communication rounds by approximately 31\%.
+\end{enabstract}

@@ -1,0 +1,94 @@
+% !TeX encoding = UTF-8
+
+\chapter{理论基础与方法设计}
+
+\section{问题建模与数学表达式}
+
+考虑包含 $K$ 个客户端的横向联邦学习系统，第 $k$ 个客户端持有本地私有数据集 $\mathcal{D}_k$，样本规模为 $n_k = |\mathcal{D}_k|$，总样本数为 $N = \sum_{k=1}^{K} n_k$。系统的全局经验风险最小化目标如式~(\ref{eq:global-obj}) 所示：
+\begin{equation}
+  \min_{\mathbf{w} \in \mathbb{R}^{d}} F(\mathbf{w})
+  = \sum_{k=1}^{K} p_k F_k(\mathbf{w}),
+  \quad
+  F_k(\mathbf{w}) = \frac{1}{n_k} \sum_{\xi \in \mathcal{D}_k} \ell(\mathbf{w}; \xi),
+  \label{eq:global-obj}
+\end{equation}
+其中，$p_k = n_k / N$ 表示客户端 $k$ 的基准权重，$\ell(\mathbf{w}; \xi)$ 为样本 $\xi$ 上的损失函数。
+
+在第 $t$ 轮通信中，服务器聚合经裁剪与高斯噪声扰动后的客户端模型增量 $\tilde{\Delta}_k^t$，全局参数更新规则可表述为：
+\begin{equation}
+  \mathbf{w}^{t+1}
+  = \mathbf{w}^t + \sum_{k \in \mathcal{S}_t} \alpha_k^t \tilde{\Delta}_k^t
+  + \mathcal{N}\!\left(\mathbf{0}, \sigma_t^2 C^2 \mathbf{I}_d\right),
+  \label{eq:dp-update}
+\end{equation}
+其中，$\alpha_k^t$ 为基于历史梯度余弦一致性动态计算的自适应聚合权重，$\sigma_t$ 为第 $t$ 轮隐私噪声尺度，$C$ 为裁剪阈值。
+
+\begin{theorem}[非凸目标收敛上界]
+  若各客户端局部目标函数 $F_k$ 满足 $L$-光滑条件且随机梯度方差有界（上界为 $\sigma_g^2$），则当学习率满足 $\eta_t \le \frac{1}{4 L E}$ 时，经过 $T$ 轮通信后算法满足：
+  \begin{equation}
+    \frac{1}{T} \sum_{t=0}^{T-1} \mathbb{E}\!\left[\|\nabla F(\mathbf{w}^t)\|^2\right]
+    \le \mathcal{O}\!\left(\frac{1}{\sqrt{K E T}}\right)
+    + \mathcal{O}\!\left(\frac{d \sigma^2}{T}\right).
+    \label{eq:conv-bound}
+  \end{equation}
+\end{theorem}
+
+\begin{proof}
+  利用 $L$-光滑性对 $F(\mathbf{w}^{t+1}) - F(\mathbf{w}^t)$ 进行二阶泰勒展开，结合噪声项的零均值独立性并在 $t = 0, \dots, T-1$ 上累加取期望即可得证，详细推导见附录~A。
+\end{proof}
+
+\section{核心参数与三线表示例}
+
+按照规范 2.4.2 节要求，表中参数应标明量和单位的符号，表序与表题居中排于表的上方，推荐使用国际通行的三线表。本文关键超参数配置见表~\ref{tab:hyperparams}。
+
+\begin{table}[htbp]
+  \centering
+  \caption{联邦学习与隐私保护关键超参数设置}
+  \label{tab:hyperparams}
+  \begin{tabular}{@{}l c l@{}}
+    \toprule
+    参数名称 & 符号与取值 & 说明 \\
+    \midrule
+    客户端总数 & $K = 100$ & 每轮随机采样率 $q = 0.1$ \\
+    本地训练轮数 & $E = 5\,\mathrm{epochs}$ & 批大小 $B = 64$ \\
+    初始学习率 & $\eta_0 = 0.01$ & 余弦退火调度 \\
+    梯度裁剪阈值 & $C = 1.0$ & 逐客户端 $\ell_2$ 范数裁剪 \\
+    隐私预算 & $\varepsilon \in \{2.0, 4.0, 8.0\}$ & 松弛项 $\delta = 10^{-5}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{跨页续表示范}
+
+当表格行数较多需要跨页排版时，规范 2.4.2 节要求在续表上方居中注明“续表”并重复排出表题。下方的表~\ref{tab:long-demo} 演示了使用 \texttt{longtable} 实现标准跨页三线表的写法。
+
+\begin{longtable}{@{}c l c c@{}}
+  \caption{不同数据异构程度下的通信与精度记录}
+  \label{tab:long-demo} \\
+  \toprule
+  实验编号 & 异构划分参数（Dirichlet $\alpha$） & 通信轮次 $T$ / 轮 & 测试准确率 / \% \\
+  \midrule
+  \endfirsthead
+
+  \multicolumn{4}{c}{\zihao{5}\songti 续表} \\
+  \caption*{表~\thetable\quad 不同数据异构程度下的通信与精度记录} \\
+  \toprule
+  实验编号 & 异构划分参数（Dirichlet $\alpha$） & 通信轮次 $T$ / 轮 & 测试准确率 / \% \\
+  \midrule
+  \endhead
+
+  \bottomrule
+  \endfoot
+
+  \bottomrule
+  \endlastfoot
+
+  E-01 & $\alpha = 0.10$（极度异构） & 100 & 74.2 \\
+  E-02 & $\alpha = 0.10$（极度异构） & 150 & 78.6 \\
+  E-03 & $\alpha = 0.30$（高度异构） & 100 & 80.5 \\
+  E-04 & $\alpha = 0.30$（高度异构） & 150 & 83.9 \\
+  E-05 & $\alpha = 0.50$（中度异构） & 100 & 84.1 \\
+  E-06 & $\alpha = 0.50$（中度异构） & 150 & 86.7 \\
+  E-07 & $\alpha = 1.00$（轻度异构） & 100 & 86.4 \\
+  E-08 & $\alpha = 1.00$（轻度异构） & 150 & 88.2 \\
+\end{longtable}

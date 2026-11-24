@@ -1,0 +1,78 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+%
+% 海南大学研究生学位论文 LaTeX 模板示例主文件
+% 文档类选项说明：
+%   degree=master|doctor    硕士（默认）/ 博士学位论文
+%   anonymous=false|true    正常版（默认）/ 盲审版（自动隐藏作者、导师、学号与致谢）
+%   print=false|true        电子提交版（默认）/ 双面装订打印版（前置单面部分自动插空白页）
+%   twoside|oneside         双面奇偶页眉页码（默认）/ 单面电子审阅
+%   enabstractsize=spec|normal  英文摘要正文按规范 16pt/20pt（默认）或小四 12pt
+%   tocdepth=2|3            目录深度：二级（默认，符合 3.7 节）或三级
+\documentclass{hainanuthesis}
+
+% ----------------------------------------------------------------------
+% 论文基本信息配置
+% ----------------------------------------------------------------------
+\hainanusetup{
+  title        = {基于自适应聚合的联邦学习隐私保护与收敛性分析},
+  % subtitle   = {可选副标题},
+  title*       = {Privacy-Preserving Adaptive Aggregation and Convergence Analysis in Federated Learning},
+  author       = {椰风},
+  author*      = {YE Feng},
+  supervisor   = {海韵~教授},
+  supervisor*  = {HAI Yun},
+  student-id   = {202400000001},
+  clc          = {TP391},
+  secret-level = {}, % 非涉密（公开）论文留空；涉密论文如“秘密（5 年）”
+  major        = {计算机科学与技术},
+  major*       = {Computer Science and Technology},
+  % 填入规范附录 B 中的官方学院全称即可自动映射英文译名；也可手动指定 school* 覆盖
+  school       = {计算机科学与技术学院（国际数字影视学院）},
+  date         = {2026 年 5 月 20 日},
+  date*        = {May, 2026},
+  calis-delay  = {none}, % 可选：none | half | one | two
+  keywords     = {联邦学习, 自适应聚合, 差分隐私, 收敛性分析, 海南大学},
+  keywords*    = {Federated Learning, Adaptive Aggregation, Differential Privacy, Convergence Analysis, Hainan University},
+}
+
+% ----------------------------------------------------------------------
+% 正文开始
+% ----------------------------------------------------------------------
+\begin{document}
+
+% 1. 中文封面、英文封面、原创性声明与授权说明（规范 3.10：单面印刷，无页码）
+\makecover
+\makedeclaration
+
+% 2. 前置部分（大写罗马页码居中，无页眉）
+\frontmatter
+\input{chapters/abstract}
+\maketoc
+\makelistoffigures
+\makelistoftables
+\input{chapters/symbols}
+
+% 3. 主体部分（阿拉伯数字页码：奇右偶左；双面页眉：奇“海南大学硕士/博士学位论文”，偶一级章标题）
+\mainmatter
+\input{chapters/ch1-introduction}
+\input{chapters/ch2-methodology}
+\input{chapters/ch3-experiments}
+\input{chapters/ch4-conclusion}
+
+% 4. 参考文献（GB/T 7714-2015 顺序编码制）
+\makebibliography{bib/references}
+
+% 5. 附录（编号自动切换为：附录 A、图 A1、表 A1、(A1)）
+\appendix
+\input{chapters/appendix-a}
+
+% 6. 结尾部分：攻读学位期间取得的成果与致谢
+\backmatter
+\input{chapters/achievements}
+\input{chapters/acknowledgements}
+
+% 如需单独生成书脊页面，取消下一行注释
+% \makespine
+
+\end{document}

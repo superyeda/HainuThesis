@@ -1,0 +1,45 @@
+# TeX / LaTeX auxiliary and build files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lol
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.xdv
+*.thm
+*.nlo
+*.nls
+
+# Compiled outputs (keep release artifacts out of git by default)
+main.pdf
+main-*.pdf
+build/
+dist/
+
+# Fonts (do not commit commercial font files)
+fonts/*.ttf
+fonts/*.TTF
+fonts/*.otf
+fonts/*.OTF
+fonts/*.ttc
+fonts/*.TTC
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
